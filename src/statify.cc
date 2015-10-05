@@ -24,8 +24,8 @@ int main(int argc, char *argv[]) {
   Event event(false);
   event.set_timestamp(717);
   event.SetField("last_name", "dial")
-       .SetField("first_name", "tom")
-       .SetField("age", 38);
+      .SetField("first_name", "tom")
+      .SetField("age", 38);
 
   Buffer buf;
   const bool serialized = Event::EventToBuffer(event, &buf);
@@ -38,6 +38,13 @@ int main(int argc, char *argv[]) {
     printf("timestamps matched\n");
   } else {
     printf("timestamps did no match\n");
+  }
+
+  printf("iterate through deserialized events:\n");
+  Event::Iterator i = event2.begin();
+  Event::Iterator e = event2.end();
+  for (; i != e; ++i) {
+    printf(" '%s' = '%s'\n", i.Key().c_str(), i.Value().c_str());
   }
 
   return 0;

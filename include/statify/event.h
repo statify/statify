@@ -27,7 +27,34 @@ namespace statify {
 class Buffer;
 
 class Event {
+  // Normally, we'd declare this below in the private section with the
+  // remainder of the member variables, but the Iterator internal class
+  // needs to know about it.
+  typedef std::map<std::string, std::string> data_type;
+
  public:
+  // Forward-only, constant iterator over Event key / values.
+  class Iterator {
+   public:
+    bool operator==(const Iterator &rhs) { return iter_ == rhs.iter_; }
+
+    bool operator!=(const Iterator &rhs) { return iter_ != rhs.iter_; }
+
+    const std::string &Key() const { return iter_->first; }
+
+    const std::string &Value() const { return iter_->second; }
+
+    Iterator &operator++() {
+      ++iter_;
+      return *this;
+    }
+
+   private:
+    friend class Event;
+    explicit Iterator(data_type::const_iterator it) : iter_(it) {}
+    data_type::const_iterator iter_;
+  };
+
   // Create the empty event. Defaults to use Now() time stamp.
   explicit Event(bool init_with_now = true);
 
@@ -63,8 +90,13 @@ class Event {
   // Returns 'true' on success, 'false' if there was an invalid arguments.
   static bool BufferToEvent(const Buffer &buffer, Event *event);
 
+  // Return Iterator to start of the key/values in the event.
+  Iterator begin() const;
+
+  // Return Iterator that points to the end-of-sequence of key/values.
+  Iterator end() const;
+
  private:
-  typedef std::map<std::string, std::string> data_type;
   int64_t timestamp_;
   data_type data_;
 };

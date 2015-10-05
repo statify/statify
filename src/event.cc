@@ -148,4 +148,8 @@ bool Event::BufferToEvent(const Buffer &buffer, Event *event) {
   return true;
 }
 
+Event::Iterator Event::begin() const { return Iterator(data_.begin()); }
+
+Event::Iterator Event::end() const { return Iterator(data_.end()); }
+
 }  // namespace statify

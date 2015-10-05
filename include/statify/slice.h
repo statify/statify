@@ -30,13 +30,13 @@ class Slice {
   // Default copy, assignment, and destructor are O.K.
 
   // Create a slice on a raw pointer and size.
-  Slice(const char* data, size_t size) : data_(data), size_(size) {}
+  Slice(const char *data, size_t size) : data_(data), size_(size) {}
 
   // Create a slice on a Buffer
-  explicit Slice(const Buffer& buf) : data_(buf.Data()), size_(buf.Size()) {}
+  explicit Slice(const Buffer &buf) : data_(buf.Data()), size_(buf.Size()) {}
 
   // Return a pointer to the start of the data.
-  const char* data() const { return data_; }
+  const char *data() const { return data_; }
 
   // Return size of data in bytes.
   size_t size() const { return size_; }
@@ -52,7 +52,7 @@ class Slice {
   }
 
  private:
-  const char* data_;
+  const char *data_;
   size_t size_;
 };
 

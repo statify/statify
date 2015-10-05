@@ -70,7 +70,7 @@ statifyd: $(STATIFYD_OBJS) libstatify.a
 
 # Statify library
 libstatify.a: $(LIBSTATIFY_OBJS)
-	ar rcs libstatify.a
+	ar rcs libstatify.a $(LIBSTATIFY_OBJS)
 	ranlib libstatify.a
 
 # Lint check

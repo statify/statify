@@ -13,6 +13,18 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include <stdio.h>
+#ifndef INCLUDE_STATIFY_UTILITY_H_
+#define INCLUDE_STATIFY_UTILITY_H_
 
-int main(int argc, char *argv[]) { return 0; }
+#include <stdlib.h>
+
+namespace statify {
+
+// Return the length of the string pointed to by 'str', not including
+// the terminating NULL character, or return 'max', if the NULL terminator
+// is not encountered within 'max' characters.
+size_t string_length_or_max(const char *str, size_t max);
+
+}  // namespace statify
+
+#endif  // INCLUDE_STATIFY_UTILITY_H_

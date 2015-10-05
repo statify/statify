@@ -1,0 +1,5 @@
+1. The Buffer class's size method is called Size() (with the uppercase S)
+while the Slice class's size method is called size(), with lowercase 's'.
+
+2. The Buffer class's data accessor method is called Data() (with upper-
+case 'D') while Slice's is called data(), with lowercase 'd'.

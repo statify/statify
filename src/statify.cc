@@ -14,5 +14,31 @@
 // contributors.
 
 #include <stdio.h>
+#include "statify/buffer.h"
+#include "statify/event.h"
 
-int main(int argc, char* argv[]) { return 0; }
+using statify::Buffer;
+using statify::Event;
+
+int main(int argc, char *argv[]) {
+  Event event(false);
+  event.set_timestamp(717);
+  event.SetField("last_name", "dial")
+       .SetField("first_name", "tom")
+       .SetField("age", 38);
+
+  Buffer buf;
+  const bool serialized = Event::EventToBuffer(event, &buf);
+  printf("serialized? %s\n", serialized ? "yes" : "no");
+
+  Event event2;
+  const bool deserialized = Event::BufferToEvent(buf, &event2);
+  printf("deserialized? %s\n", deserialized ? "yes" : "no");
+  if (event.timestamp() == event2.timestamp()) {
+    printf("timestamps matched\n");
+  } else {
+    printf("timestamps did no match\n");
+  }
+
+  return 0;
+}

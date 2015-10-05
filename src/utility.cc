@@ -13,6 +13,17 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include <stdio.h>
+#include "statify/utility.h"
 
-int main(int argc, char *argv[]) { return 0; }
+namespace statify {
+
+size_t string_length_or_max(const char *str, size_t max) {
+  for (size_t i = 0; i < max; ++i) {
+    if (str[i] == '\0') {
+      return i;
+    }
+  }
+  return max;
+}
+
+}  // namespace statify

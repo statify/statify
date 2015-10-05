@@ -73,6 +73,7 @@ STATIFYD_SOURCES+='./src/statifyd.cc'
 # Source files for the Statify library
 LIBSTATIFY_SOURCES+='./src/buffer.cc '
 LIBSTATIFY_SOURCES+='./src/event.cc '
+LIBSTATIFY_SOURCES+='./src/utility.cc '
 
 # Lint sources
 CPPLINT_SOURCES+='./src/*.cc '

@@ -32,14 +32,14 @@ class Event {
   explicit Event(bool init_with_now = true);
 
   // Set the timestamp in nanoseconds since the epoch.
-  Event& set_timestamp(int64_t epoch_nanos);
+  Event &set_timestamp(int64_t epoch_nanos);
 
   // Get the timestamp in nanoseconds since the epoch.
   int64_t timestamp() const;
 
   // Sets a value for a named field.
   template <typename ValueType>
-  Event& SetField(const std::string& field_name, const ValueType& value) {
+  Event &SetField(const std::string &field_name, const ValueType &value) {
     std::stringstream tmp;
     tmp << value;
     data_.insert(data_type::value_type(field_name, tmp.str()));
@@ -47,21 +47,21 @@ class Event {
   }
 
   // Return 'true' if the event has the specified field, false otherwise.
-  bool HasField(const std::string& field_name) const;
+  bool HasField(const std::string &field_name) const;
 
   // Return the value for a field, or the empty string.
-  const std::string& GetField(const std::string& field_name) const;
+  const std::string &GetField(const std::string &field_name) const;
 
   // Get the current timestamp in nanoseconds since the epoch.
   static int64_t Now();
 
   // Serialize an event to a buffer.
   // Returns 'true' on success, 'false' if there was an invalid argument.
-  static bool EventToBuffer(const Event& event, Buffer* buffer);
+  static bool EventToBuffer(const Event &event, Buffer *buffer);
 
   // Deserialize an event from a buffer.
   // Returns 'true' on success, 'false' if there was an invalid arguments.
-  static bool BufferToEvent(const Buffer& buffer, Event* event);
+  static bool BufferToEvent(const Buffer &buffer, Event *event);
 
  private:
   typedef std::map<std::string, std::string> data_type;

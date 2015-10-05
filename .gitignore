@@ -8,11 +8,11 @@ build_config.mk
 *.o
 
 # Ignore binaries
-blastify
-blastifyd
-libblastify.a
+statify
+statifyd
+libstatify.a
 
 # Don't ignore the files in the subdirectory of include/blastify
-!blastify/
+!statify/
 
 

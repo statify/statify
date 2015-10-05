@@ -1,2 +1,2 @@
-# statify
-High-performance statistics gathering library and daemon
+# Statify
+Metrics Collector Daemon and Client Library

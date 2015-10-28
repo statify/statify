@@ -1,5 +1,6 @@
 # Ignore vim temp files
 *~
+*.swp
 
 # Ignore build products
 build_config.mk

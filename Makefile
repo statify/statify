@@ -59,13 +59,8 @@ count:
 	wc -l $(CPPLINT_SOURCES)
 
 # Statify daemon
-statifyd: $(STATIFYD_OBJS) libstatify.a
+statifyd: $(STATIFYD_OBJS)
 	$(CXX) $(CXXFLAGS) -o statifyd $(STATIFYD_OBJS) $(LIBRARIES)
-
-# Statify library
-libstatify.a: $(LIBSTATIFY_OBJS)
-	ar rcs libstatify.a $(LIBSTATIFY_OBJS)
-	ranlib libstatify.a
 
 # Lint check
 .PHONY:

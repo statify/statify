@@ -63,7 +63,8 @@ fi
 STATIFYD_SOURCES=""
 
 # Source files for the Statify daemon
-STATIFYD_SOURCES+='./src/statifyd.cc'
+STATIFYD_SOURCES+='./src/statifyd.cc '
+STATIFYD_SOURCES+='./src/log.cc '
 
 # Lint sources
 CPPLINT_SOURCES+='./src/*.cc '

@@ -13,26 +13,23 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#ifndef INCLUDE_STATIFY_LOG_H_
-#define INCLUDE_STATIFY_LOG_H_
-
-#include <stdarg.h>
+#ifndef INCLUDE_STATIFY_PROGRAM_OPTIONS_H_
+#define INCLUDE_STATIFY_PROGRAM_OPTIONS_H_
 
 namespace statify {
 
-class Log {
+class ProgramOptions {
  public:
-  enum Level {
-    ABORT = 0,
-    ERROR = 1,
-    WARN = 2,
-    INFO = 3,
-    DEBUG = 4
-  };
+  ProgramOptions(int argc, char* argv[]);
+  // Default copy, assignment, and destructor OK.
 
-  static void Write(int level, const char* fmt, ...);
+  void set_port(int port);
+  int port() const;
+
+ private:
+  int port_;
 };
 
 }  // namespace statify
 
-#endif  // INCLUDE_STATIFY_LOG_H_
+#endif  // INCLUDE_STATIFY_PROGRAM_OPTIONS_H_

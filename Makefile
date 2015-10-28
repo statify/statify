@@ -40,13 +40,11 @@ include build_config.mk
 
 CXXFLAGS += -I. -I./include $(OPT) $(WARNINGFLAGS)
 
-STATIFY_OBJS = $(STATIFY_SOURCES:.cc=.o)
 STATIFYD_OBJS = $(STATIFYD_SOURCES:.cc=.o)
-LIBSTATIFY_OBJS = $(LIBSTATIFY_SOURCES:.cc=.o)
 TESTS = 
 
 # Targets
-all: statify statifyd libstatify.a
+all: statifyd
 
 .PHONY:
 check: $(TESTS)
@@ -54,19 +52,15 @@ check: $(TESTS)
 
 .PHONY:
 clean:
-	-rm -f */*.o build_config.mk *.a statify statifyd libstatify.a
+	-rm -f */*.o build_config.mk *.a statifyd
 
 .PHONY:
 count:
 	wc -l $(CPPLINT_SOURCES)
 
-# Statify client
-statify: $(STATIFY_OBJS) libstatify.a
-	$(CXX) $(CXXFLAGS) -o statify $(STATIFY_OBJS) $(LIBRARIES) libstatify.a
-
 # Statify daemon
 statifyd: $(STATIFYD_OBJS) libstatify.a
-	$(CXX) $(CXXFLAGS) -o statifyd $(STATIFYD_OBJS) $(LIBRARIES) libstatify.a
+	$(CXX) $(CXXFLAGS) -o statifyd $(STATIFYD_OBJS) $(LIBRARIES)
 
 # Statify library
 libstatify.a: $(LIBSTATIFY_OBJS)

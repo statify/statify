@@ -50,7 +50,7 @@ if test -z "$LINT_TOOL"; then
 fi
 
 # Add dependent libraries
-LIBRARIES="-lpthread -lrt"
+LIBRARIES="-lpthread -lrt -levent"
 
 # Check for curl library
 if [ -n "`which curl-config`" ]; then
@@ -60,32 +60,17 @@ else
   exit 1
 fi
 
-STATIFY_SOURCES=""
 STATIFYD_SOURCES=""
-LIBSTATIFY_SOURCES=""
-
-# Source files for the Statify client
-STATIFY_SOURCES+='./src/statify.cc'
 
 # Source files for the Statify daemon
 STATIFYD_SOURCES+='./src/statifyd.cc'
-
-# Source files for the Statify library
-LIBSTATIFY_SOURCES+='./src/buffer.cc '
-LIBSTATIFY_SOURCES+='./src/event.cc '
-LIBSTATIFY_SOURCES+='./src/utility.cc '
 
 # Lint sources
 CPPLINT_SOURCES+='./src/*.cc '
 CPPLINT_SOURCES+='./include/statify/*.h '
 
-#
 # Emit variables
-#
-
-echo "STATIFY_SOURCES=$STATIFY_SOURCES" >> $OUTPUT
 echo "STATIFYD_SOURCES=$STATIFYD_SOURCES" >> $OUTPUT
-echo "LIBSTATIFY_SOURCES=$LIBSTATIFY_SOURCES" >> $OUTPUT
 echo "CPPLINT_SOURCES=$CPPLINT_SOURCES" >> $OUTPUT
 echo "CXX=$CXX" >> $OUTPUT
 echo "LIBRARIES=$LIBRARIES" >> $OUTPUT

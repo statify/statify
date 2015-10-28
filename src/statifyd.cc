@@ -24,23 +24,42 @@ using statify::Log;
 using statify::ProgramOptions;
 
 int main(int argc, char* argv[]) {
-  // Extract program options
-  ProgramOptions options(argc, argv);
+  // Log startup
+  Log::Write(Log::INFO, "statifyd - Copyright (C) 2015 The Statify Authors");
+  Log::Write(Log::INFO, "starting up");
+
+  // Extract program options from command line
+  ProgramOptions options;
+  options.ParseCommandLine(argc, argv);
+
+  // Log important startup parameters
+  Log::Write(Log::INFO, "listener port: %d", options.port());
+  Log::Write(Log::INFO, "listener size: %d", options.backlog());
 
   // Create event base
-  struct event_base* evb = event_base_new();
-  if (evb == NULL) {
+  struct event_base* evbase = event_base_new();
+  if (evbase == NULL) {
     Log::Write(Log::ABORT, "failed to create event base");
     return EXIT_FAILURE;
   }
 
-  Log::Write(Log::DEBUG, "starting event dispatching");
+  // Create a TCP listener
+  // struct evconnlistener* listener = NULL;
+  // listener = evconnlistener_new_bind(evbase, accept_callback, 0
+
+  Log::Write(Log::INFO, "startup complete");
 
   // Dispatch events
-  event_base_dispatch(evb);
+  event_base_dispatch(evbase);
+
+  // Log that we're initiating shutdown
+  Log::Write(Log::INFO, "shutting down");
 
   // Free the event base
-  event_base_free(evb);
+  event_base_free(evbase);
+
+  // Finally, log that we're done and exiting.
+  Log::Write(Log::INFO, "shutdown complete");
 
   return EXIT_SUCCESS;
 }

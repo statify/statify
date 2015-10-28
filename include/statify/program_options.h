@@ -20,14 +20,31 @@ namespace statify {
 
 class ProgramOptions {
  public:
-  ProgramOptions(int argc, char* argv[]);
-  // Default copy, assignment, and destructor OK.
+  // Construct with reasonable defaults.
+  ProgramOptions();
 
+  // Parse options from the command-line argument list.
+  void ParseCommandLine(int argc, char* argv[]);
+
+  // Print command-line options.
+  void DisplayHelp();
+
+  // Set/get the TCP port number to listen on for new connections.
   void set_port(int port);
   int port() const;
 
+  // Set/get the listener backlog queue length.
+  void set_backlog(int backlog);
+  int backlog() const;
+
+  // Set/get the help option.
+  void set_help(bool help);
+  bool help() const;
+
  private:
   int port_;
+  int backlog_;
+  bool help_;
 };
 
 }  // namespace statify

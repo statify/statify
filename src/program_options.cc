@@ -17,22 +17,37 @@
 #include <assert.h>
 #include <ctype.h>
 #include <getopt.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "statify/log.h"
 
 namespace {
 
+// Long options
 static struct option kLongOpts[] = {{"port", required_argument, 0, 'p'},
+                                    {"backlog", required_argument, 0, 'b'},
+                                    {"help", no_argument, 0, 'h'},
                                     {0, 0, 0, 0}};
 
-static const char* kOptString = "p:";
+// Short options string; must correspond to kLongOpts
+static const char* kOptString = "p:b:";
+
+// Default port number to use when listening for new TCP connections.
+static const int kDefaultPortNumber = 9700;
+
+// Default length of the listener's backlog queue.
+static const int kDefaultBacklog = 10;
 
 }  // namespace
 
 namespace statify {
 
-ProgramOptions::ProgramOptions(int argc, char* argv[]) {
+ProgramOptions::ProgramOptions()
+    : port_(kDefaultPortNumber), backlog_(kDefaultBacklog), help_(false) {
+}
+
+void ProgramOptions::ParseCommandLine(int argc, char* argv[]) {
   for (;;) {
     int index = 0;
     int param = getopt_long(argc, argv, kOptString, kLongOpts, &index);
@@ -41,13 +56,27 @@ ProgramOptions::ProgramOptions(int argc, char* argv[]) {
     }
 
     switch (param) {
-      case 'p': {
+      case 'p':
         set_port(atoi(optarg));
-      } break;
+        break;
 
-      default: { Log::Write(Log::ABORT, "invalid argument: %c", param); } break;
+      case 'b':
+        set_backlog(atoi(optarg));
+        break;
+
+      case 'h':
+        set_help(true);
+        break;
+
+      default:
+        Log::Write(Log::ABORT, "invalid argument: %c", param);
+        break;
     }
   }
+}
+
+void ProgramOptions::DisplayHelp() {
+  printf("TODO(tdial): DisplayHelp()\n");
 }
 
 void ProgramOptions::set_port(int port) {
@@ -62,6 +91,26 @@ void ProgramOptions::set_port(int port) {
 
 int ProgramOptions::port() const {
   return port_;
+}
+
+void ProgramOptions::set_backlog(int backlog) {
+  assert(backlog > 0);
+  if (backlog < 1) {
+    return;
+  }
+  backlog_ = backlog;
+}
+
+int ProgramOptions::backlog() const {
+  return backlog_;
+}
+
+void ProgramOptions::set_help(bool help) {
+  help_ = help;
+}
+
+bool ProgramOptions::help() const {
+  return help_;
 }
 
 }  // namespace statify

@@ -60,6 +60,8 @@ void ProgramOptions::set_port(int port) {
   port_ = port;
 }
 
-int ProgramOptions::port() const { return port_; }
+int ProgramOptions::port() const {
+  return port_;
+}
 
 }  // namespace statify

@@ -23,7 +23,7 @@
 namespace {
 
 static const char* LevelToString(int level) {
-  using namespace statify;
+  using statify::Log;
 
   const int kInvalidLevelIndex = 5;
 

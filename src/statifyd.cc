@@ -55,13 +55,17 @@ void accept_error_callback(struct evconnlistener* listener, void* arg) {
 }  // namespace
 
 int main(int argc, char* argv[]) {
-  // Log startup
-  Log::Write(Log::INFO, "statifyd - Copyright (C) 2015 The Statify Authors");
-  Log::Write(Log::INFO, "starting up");
-
   // Extract program options from command line
   ProgramOptions options;
   options.ParseCommandLine(argc, argv);
+  if (options.help()) {
+    options.DisplayHelp();
+    return EXIT_SUCCESS;
+  }
+
+  // Log startup
+  Log::Write(Log::INFO, "statifyd - Copyright (C) 2015 The Statify Authors");
+  Log::Write(Log::INFO, "starting up");
 
   // Log important startup parameters
   Log::Write(Log::INFO, "listener port: %d", options.port());

@@ -31,7 +31,7 @@ static struct option kLongOpts[] = {{"port", required_argument, 0, 'p'},
                                     {0, 0, 0, 0}};
 
 // Short options string; must correspond to kLongOpts
-static const char* kOptString = "p:b:";
+static const char* kOptString = "p:b:h";
 
 // Default port number to use when listening for new TCP connections.
 static const int kDefaultPortNumber = 9700;
@@ -76,7 +76,13 @@ void ProgramOptions::ParseCommandLine(int argc, char* argv[]) {
 }
 
 void ProgramOptions::DisplayHelp() {
-  printf("TODO(tdial): DisplayHelp()\n");
+  fprintf(stdout,
+          "statifyd - Copyright (C) 2015 The Statify Authors\n"
+          "Options:\n"
+          " --port     -p   Specify listener port      (default: %d)\n"
+          " --backlog  -b   Specify listener backlog   (default: %d)\n"
+          " --help     -h   Display this help message\n",
+          kDefaultPortNumber, kDefaultBacklog);
 }
 
 void ProgramOptions::set_port(int port) {

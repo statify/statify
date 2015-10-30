@@ -14,8 +14,12 @@
 // contributors.
 
 #include <arpa/inet.h>
+#include <assert.h>
+#include <event2/buffer.h>
+#include <event2/bufferevent.h>
 #include <event2/event.h>
 #include <event2/listener.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,9 +34,81 @@ using statify::ProgramOptions;
 
 namespace {
 
+/*
+class Connection {
+ public:
+ private:
+  Connection(const Connection& no_copy);
+  Connection& operator=(const Connection& no_
+};
+*/
+
+void buffer_read_callback(struct bufferevent* bev, void* ctx) {
+  Log::Write(Log::INFO, "buffer_read_callback()");
+
+  // TODO(tdial): Can bev or ctx be NULL?
+  assert(bev != NULL);
+  assert(ctx != NULL);
+
+  // Access the input
+  // TODO(tdial): Can this function return NULL?
+  struct evbuffer* in = bufferevent_get_input(bev);
+  assert(in != NULL);
+
+  // Access the output
+  // TODO(tdial): Can this function return NULL?
+  struct evbuffer* out = bufferevent_get_output(bev);
+  assert(out != NULL);
+
+  // Write out whatever we read
+  evbuffer_add_buffer(out, in);
+}
+
+void buffer_write_callback(struct bufferevent* bev, void* ctx) {
+  // TODO(tdial): Implement
+  Log::Write(Log::INFO, "buffer_write_callback()");
+}
+
+void buffer_event_callback(struct bufferevent* bev, int16_t events, void* ctx) {
+  Log::Write(Log::INFO, "buffer_event_callback()");
+
+  if (events & BEV_EVENT_ERROR) {
+    Log::Write(Log::ERROR, "buffer_event_callback(): BEV_EVENT_ERROR");
+  }
+
+  if (events & BEV_EVENT_EOF) {
+    Log::Write(Log::INFO, "buffer_event_callback(): BEV_EVENT_EOF");
+    bufferevent_free(bev);
+  }
+}
+
 // Callback that is registered to handle new connection attempts.
 void accept_callback(struct evconnlistener* listener, evutil_socket_t sock,
                      struct sockaddr* addr, int, void* arg) {
+  // TODO(tdial): Can listener ever be NULL?
+  assert(listener != NULL);
+
+  // TODO(tdial): Can socket ever be invalid?
+  assert(sock >= 0);
+
+  // TODO(tdial): Can a valid listener ever provide an invalid base?
+  struct event_base* base = evconnlistener_get_base(listener);
+  assert(base != NULL);
+
+  // Construct buffer event object
+  struct bufferevent* bev(NULL);
+  bev = bufferevent_socket_new(base, sock, BEV_OPT_CLOSE_ON_FREE);
+
+  // TODO(tdial): In what circumstances may bufferevent_socket_new() fail?
+  assert(bev != NULL);
+
+  // Configure event callbacks
+  bufferevent_setcb(bev, buffer_read_callback, buffer_write_callback,
+                    buffer_event_callback, NULL);
+
+  bufferevent_enable(bev, EV_READ | EV_WRITE);
+
+  /*
   // Reference arguments
   (void)listener;
   (void)sock;
@@ -42,6 +118,7 @@ void accept_callback(struct evconnlistener* listener, evutil_socket_t sock,
   Log::Write(Log::INFO, "accepted connection");
   close(sock);
   Log::Write(Log::INFO, "closed connection");
+  */
 }
 
 // Callback that is registered to handle errors occurring during accept.

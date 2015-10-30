@@ -34,15 +34,6 @@ using statify::ProgramOptions;
 
 namespace {
 
-/*
-class Connection {
- public:
- private:
-  Connection(const Connection& no_copy);
-  Connection& operator=(const Connection& no_
-};
-*/
-
 void buffer_read_callback(struct bufferevent* bev, void* ctx) {
   Log::Write(Log::INFO, "buffer_read_callback()");
 
@@ -107,18 +98,6 @@ void accept_callback(struct evconnlistener* listener, evutil_socket_t sock,
                     buffer_event_callback, NULL);
 
   bufferevent_enable(bev, EV_READ | EV_WRITE);
-
-  /*
-  // Reference arguments
-  (void)listener;
-  (void)sock;
-  (void)addr;
-  (void)arg;
-
-  Log::Write(Log::INFO, "accepted connection");
-  close(sock);
-  Log::Write(Log::INFO, "closed connection");
-  */
 }
 
 // Callback that is registered to handle errors occurring during accept.

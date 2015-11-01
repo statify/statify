@@ -33,18 +33,24 @@ static struct option kLongOpts[] = {{"port", required_argument, 0, 'p'},
 // Short options string; must correspond to kLongOpts
 static const char* kOptString = "p:b:h";
 
-// Default port number to use when listening for new TCP connections.
-static const int kDefaultPortNumber = 9700;
-
 // Default length of the listener's backlog queue.
 static const int kDefaultBacklog = 10;
+
+// Maximum message size: 64kb
+static const int kDefaultMaxMessageSize = 65536;
+
+// Default port number to use when listening for new TCP connections.
+static const int kDefaultPortNumber = 9700;
 
 }  // namespace
 
 namespace statify {
 
 ProgramOptions::ProgramOptions()
-    : port_(kDefaultPortNumber), backlog_(kDefaultBacklog), help_(false) {
+    : backlog_(kDefaultBacklog),
+      help_(false),
+      max_message_size_(kDefaultMaxMessageSize),
+      port_(kDefaultPortNumber) {
 }
 
 void ProgramOptions::ParseCommandLine(int argc, char* argv[]) {
@@ -103,6 +109,18 @@ void ProgramOptions::set_help(bool help) {
 
 bool ProgramOptions::help() const {
   return help_;
+}
+
+void ProgramOptions::set_max_message_size(int max_size) {
+  assert(max_size > 0);
+  if (max_size < 1) {
+    return;
+  }
+  max_message_size_ = max_size;
+}
+
+int ProgramOptions::max_message_size() {
+  return max_message_size_;
 }
 
 void ProgramOptions::set_port(int port) {

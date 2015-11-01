@@ -15,4 +15,50 @@
 
 #include "statify/statify.h"
 
-namespace statify {}  // namespace statify
+namespace statify {
+
+Statify::~Statify() {
+}
+
+Statify::Options::Options() : host_("127.0.0.1"), port_(kDefaultPortNumber) {
+}
+
+Statify::Options& Statify::Options::set_host(const std::string& host_or_ip) {
+  host_ = host_or_ip;
+  return *this;
+}
+
+const char* Statify::Options::host() const {
+  return host_.c_str();
+}
+
+Statify::Options& Statify::Options::set_port(int port) {
+  const int kMinPort = 1;
+  const int kMaxPort = 65535;
+  assert(port >= kMinPort);
+  assert(port <= kMaxPort);
+  if ((port >= kMinPort) && (port <= kMaxPort)) {
+    port_ = port;
+  }
+  return *this;
+}
+
+int Statify::Options::port() const {
+  return port_;
+}
+
+Statify* Statify::Create(const Options* options) {
+  // TODO(tdial): Implement
+  return new Statify();
+}
+
+int Statify::LogEvent(const Event& event) {
+  // TODO(tdial): Implement
+  return 0;
+}
+
+Statify::Statify() {
+  // TODO(tdial): Implement
+}
+
+}  // namespace statify

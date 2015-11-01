@@ -16,6 +16,52 @@
 #ifndef INCLUDE_STATIFY_STATIFY_H_
 #define INCLUDE_STATIFY_STATIFY_H_
 
-namespace statify {}  // namespace statify
+#include <assert.h>
+#include <string>
+#include "statify/default_port_number.h"
+#include "statify/event.h"
+
+namespace statify {
+
+class Statify {
+ public:
+  ~Statify();
+
+  // Options structure used to specify alternate host and port.
+  // If NULL is passed to Statify::Create(), localhost and port 9700 are used.
+  class Options {
+   public:
+    Options();
+
+    // Set the host name string.
+    Options& set_host(const std::string& host_or_ip);
+
+    // Return the host name string.
+    const char* host() const;
+
+    // Set the port number.
+    Options& set_port(int port);
+
+    // Return the port number.
+    int port() const;
+
+   private:
+    std::string host_;
+    int port_;
+  };
+
+  // Create an instance of the Statify event logger.
+  static Statify* Create(const Options* options = NULL);
+
+  // Log an event
+  int LogEvent(const Event& event);
+
+ private:
+  Statify();
+  Statify(const Statify& no_copy);
+  Statify& operator=(const Statify& no_assign);
+};
+
+}  // namespace statify
 
 #endif  // INCLUDE_STATIFY_STATIFY_H_

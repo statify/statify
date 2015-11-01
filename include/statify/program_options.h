@@ -29,10 +29,6 @@ class ProgramOptions {
   // Print command-line options.
   void DisplayHelp();
 
-  // Set/get the TCP port number to listen on for new connections.
-  void set_port(int port);
-  int port() const;
-
   // Set/get the listener backlog queue length.
   void set_backlog(int backlog);
   int backlog() const;
@@ -41,10 +37,20 @@ class ProgramOptions {
   void set_help(bool help);
   bool help() const;
 
+  // Set the maximum message size in bytes that the server will allow.
+  // The server will terminate connections that send larger messages.
+  void set_max_message_size(int max_size);
+  int max_message_size();
+
+  // Set/get the TCP port number to listen on for new connections.
+  void set_port(int port);
+  int port() const;
+
  private:
-  int port_;
   int backlog_;
   bool help_;
+  int max_message_size_;
+  int port_;
 };
 
 }  // namespace statify

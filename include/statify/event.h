@@ -93,11 +93,11 @@ class Event {
 
   // Serialize an event to a buffer.
   // Returns 'true' on success, 'false' if there was an invalid argument.
-  static bool EventToBuffer(const Event &event, Buffer *buffer);
+  static bool ToBuffer(const Event &event, Buffer *buffer);
 
   // Deserialize an event from a buffer.
   // Returns 'true' on success, 'false' if there was an invalid arguments.
-  static bool BufferToEvent(const Buffer &buffer, Event *event);
+  static bool FromBuffer(const Buffer &buffer, Event *event);
 
   // Return Iterator to start of the key/values in the event.
   Iterator begin() const;

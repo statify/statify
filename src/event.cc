@@ -23,10 +23,6 @@
 
 namespace {
 
-static const char kStatifyVersion[] = {0x46, 0x44, 0x53, 0x00};
-
-static const int kStatifyVersionSize = sizeof(kStatifyVersion);
-
 // Read a NULL-terminated string from a slice, returning the string.
 // The invocation advances the "window" in the slice past the NULL
 // character, unless the string that was extracted was at the very
@@ -76,18 +72,15 @@ int64_t Event::Now() {
   return (ts.tv_sec * kBillion) + ts.tv_nsec;
 }
 
-bool Event::EventToBuffer(const Event &event, Buffer *buffer) {
+bool Event::ToBuffer(const Event &event, Buffer *buffer) {
   assert(buffer != NULL);
   if (buffer == NULL) {
     return false;
   }
 
-  // Append the version header to the message.
-  buffer->Append(kStatifyVersion, sizeof(kStatifyVersion));
-
-  // Append the time stamp.
-  // TODO(tdial): Deal with endianness.
-  buffer->Append((const char *)(&(event.timestamp_)), sizeof(event.timestamp_));
+  // Append the time stamp, ensuring network byte order.
+  int64_t net_int = htons64(event.timestamp_);
+  buffer->Append((const char *)&net_int, sizeof(net_int));
 
   // Append all key/value pairs. We append all strings like this:
   //   <key0>\0<value0>\0<key1>\0<value1>\0\0
@@ -97,6 +90,7 @@ bool Event::EventToBuffer(const Event &event, Buffer *buffer) {
   for (; i != e; ++i) {
     // Append key, including terminating NULL
     buffer->Append(i->first.c_str(), i->first.size() + 1);
+
     // Append value, including terminating NULL
     buffer->Append(i->second.c_str(), i->second.size() + 1);
   }
@@ -107,7 +101,7 @@ bool Event::EventToBuffer(const Event &event, Buffer *buffer) {
   return true;
 }
 
-bool Event::BufferToEvent(const Buffer &buffer, Event *event) {
+bool Event::FromBuffer(const Buffer &buffer, Event *event) {
   assert(event != NULL);
   if (event == NULL) {
     return false;
@@ -117,25 +111,9 @@ bool Event::BufferToEvent(const Buffer &buffer, Event *event) {
   // the buffer that we can advance cheaply without any copying.
   Slice slice(buffer);
 
-  // First, ensure that we have at least enough data in the message to
-  // hold a valid header, which contains a four-byte version identifier,
-  // followed by an eight-byte timestamp.
-  const size_t kMinMsgSize = sizeof(kStatifyVersionSize) + sizeof(int64_t);
-  if (slice.size() < kMinMsgSize) {
-    return false;
-  }
-
-  // Ensure that the version header is valid.
-  if (0 != memcmp(kStatifyVersion, slice.data(), kStatifyVersionSize)) {
-    return false;
-  }
-
-  // Advance slice past the version header.
-  slice.RemovePrefix(kStatifyVersionSize);
-
-  // Copy time stamp directly into the user's event
-  // TODO(tdial): Deal with endianness.
+  // Extract time stamp into event, ensuring host byte order.
   memcpy(&(event->timestamp_), slice.data(), sizeof(int64_t));
+  event->timestamp_ = ntohs64(event->timestamp_);
 
   // Advance past the timestamp portion of the message.
   slice.RemovePrefix(sizeof(int64_t));

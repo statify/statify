@@ -26,9 +26,13 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <statify/buffer.h>
+#include <statify/event.h>
 #include "statify/log.h"
 #include "statify/program_options.h"
 
+using statify::Buffer;
+using statify::Event;
 using statify::Log;
 using statify::ProgramOptions;
 

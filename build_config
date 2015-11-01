@@ -60,12 +60,16 @@ else
   exit 1
 fi
 
-STATIFYD_SOURCES=""
-
 # Source files for the Statify daemon
+STATIFYD_SOURCES=""
 STATIFYD_SOURCES+='./src/log.cc '
 STATIFYD_SOURCES+='./src/program_options.cc '
 STATIFYD_SOURCES+='./src/statifyd.cc '
+
+# Source files for the Statify library
+STATIFY_SOURCES=""
+STATIFY_SOURCES+='./src/buffer.cc '
+STATIFY_SOURCES+='./src/statify.cc '
 
 # Lint sources
 CPPLINT_SOURCES+='./src/*.cc '
@@ -73,6 +77,7 @@ CPPLINT_SOURCES+='./include/statify/*.h '
 
 # Emit variables
 echo "STATIFYD_SOURCES=$STATIFYD_SOURCES" >> $OUTPUT
+echo "STATIFY_SOURCES=$STATIFY_SOURCES" >> $OUTPUT
 echo "CPPLINT_SOURCES=$CPPLINT_SOURCES" >> $OUTPUT
 echo "CXX=$CXX" >> $OUTPUT
 echo "LIBRARIES=$LIBRARIES" >> $OUTPUT

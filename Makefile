@@ -64,7 +64,7 @@ libstatify.a: $(STATIFY_OBJS)
 
 # Statify daemon
 statifyd: $(STATIFYD_OBJS) libstatify.a
-	$(CXX) $(CXXFLAGS) -o statifyd $(STATIFYD_OBJS) $(LIBRARIES) libstatify.a
+	$(CXX) $(CXXFLAGS) $(ALT_LIBEVENT_LIBRARY) -o statifyd $(STATIFYD_OBJS) $(LIBRARIES) libstatify.a
 
 # Lint check
 .PHONY:
@@ -85,5 +85,5 @@ reformat:
 
 # Suffix Rules
 .cc.o:
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(ALT_LIBEVENT_INCLUDE) -c $< -o $@
 

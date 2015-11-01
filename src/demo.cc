@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "statify/statify.h"
 
+using statify::Event;
 using statify::Statify;
 
 int main(int argc, char* argv[]) {
@@ -27,6 +28,13 @@ int main(int argc, char* argv[]) {
 
   // Print the address of the event writer.
   printf("event_writer = %p\n", event_writer);
+
+  Event event;
+  event.SetField("origin", "demo");
+  event.SetField("useful", "true");
+
+  int status = event_writer->LogEvent(event);
+  printf("Statify::LogEvent() returned %d\n", status);
 
   // Delete the event writer.
   delete event_writer;

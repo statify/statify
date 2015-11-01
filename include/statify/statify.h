@@ -53,6 +53,9 @@ class Statify {
   // Create an instance of the Statify event logger.
   static Statify* Create(const Options* options = NULL);
 
+  // Log an event
+  int LogEvent(const Event& event);
+
  private:
   Statify();
   Statify(const Statify& no_copy);

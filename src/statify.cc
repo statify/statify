@@ -52,6 +52,11 @@ Statify* Statify::Create(const Options* options) {
   return new Statify();
 }
 
+int Statify::LogEvent(const Event& event) {
+  // TODO(tdial): Implement
+  return 0;
+}
+
 Statify::Statify() {
   // TODO(tdial): Implement
 }

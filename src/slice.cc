@@ -13,6 +13,6 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include "statify/statify.h"
+#include "statify/slice.h"
 
 namespace statify {}  // namespace statify

@@ -20,7 +20,8 @@
 
 namespace statify {
 
-Buffer::Buffer() {}
+Buffer::Buffer() {
+}
 
 Buffer::Buffer(const std::string &str) {
   const size_t size = str.size();
@@ -29,7 +30,9 @@ Buffer::Buffer(const std::string &str) {
   data_[size] = 0;
 }
 
-Buffer::Buffer(size_t size) { data_.resize(size); }
+Buffer::Buffer(size_t size) {
+  data_.resize(size);
+}
 
 Buffer::Buffer(const char *data, size_t size) {
   assert(data != NULL);
@@ -37,7 +40,9 @@ Buffer::Buffer(const char *data, size_t size) {
   memcpy(&(data_[0]), data, size);
 }
 
-Buffer::Buffer(const Buffer &copy_from) { data_ = copy_from.data_; }
+Buffer::Buffer(const Buffer &copy_from) {
+  data_ = copy_from.data_;
+}
 
 Buffer &Buffer::operator=(const Buffer &assign_from) {
   Buffer tmp(assign_from);
@@ -45,13 +50,20 @@ Buffer &Buffer::operator=(const Buffer &assign_from) {
   return *this;
 }
 
-Buffer::~Buffer() {}
+Buffer::~Buffer() {
+}
 
-size_t Buffer::Size() const { return data_.size(); }
+size_t Buffer::Size() const {
+  return data_.size();
+}
 
-const char *Buffer::Data() const { return &(data_[0]); }
+const char *Buffer::Data() const {
+  return &(data_[0]);
+}
 
-char *Buffer::Data() { return &(data_[0]); }
+char *Buffer::Data() {
+  return &(data_[0]);
+}
 
 Buffer &Buffer::Append(const char *data, size_t size) {
   const size_t current_size = data_.size();
@@ -70,7 +82,9 @@ void Buffer::swap(Buffer &other) {
   swap(this->data_, other.data_);
 }
 
-void swap(Buffer &lhs, Buffer &rhs) { lhs.swap(rhs); }
+void swap(Buffer &lhs, Buffer &rhs) {
+  lhs.swap(rhs);
+}
 
 }  // namespace statify
 

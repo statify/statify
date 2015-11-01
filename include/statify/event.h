@@ -36,13 +36,21 @@ class Event {
   // Forward-only, constant iterator over Event key / values.
   class Iterator {
    public:
-    bool operator==(const Iterator &rhs) { return iter_ == rhs.iter_; }
+    bool operator==(const Iterator &rhs) {
+      return iter_ == rhs.iter_;
+    }
 
-    bool operator!=(const Iterator &rhs) { return iter_ != rhs.iter_; }
+    bool operator!=(const Iterator &rhs) {
+      return iter_ != rhs.iter_;
+    }
 
-    const std::string &Key() const { return iter_->first; }
+    const std::string &Key() const {
+      return iter_->first;
+    }
 
-    const std::string &Value() const { return iter_->second; }
+    const std::string &Value() const {
+      return iter_->second;
+    }
 
     Iterator &operator++() {
       ++iter_;
@@ -51,7 +59,8 @@ class Event {
 
    private:
     friend class Event;
-    explicit Iterator(data_type::const_iterator it) : iter_(it) {}
+    explicit Iterator(data_type::const_iterator it) : iter_(it) {
+    }
     data_type::const_iterator iter_;
   };
 
@@ -84,11 +93,11 @@ class Event {
 
   // Serialize an event to a buffer.
   // Returns 'true' on success, 'false' if there was an invalid argument.
-  static bool EventToBuffer(const Event &event, Buffer *buffer);
+  static bool ToBuffer(const Event &event, Buffer *buffer);
 
   // Deserialize an event from a buffer.
   // Returns 'true' on success, 'false' if there was an invalid arguments.
-  static bool BufferToEvent(const Buffer &buffer, Event *event);
+  static bool FromBuffer(const Buffer &buffer, Event *event);
 
   // Return Iterator to start of the key/values in the event.
   Iterator begin() const;

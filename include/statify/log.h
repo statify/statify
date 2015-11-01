@@ -13,6 +13,20 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include "statify/statify.h"
+#ifndef INCLUDE_STATIFY_LOG_H_
+#define INCLUDE_STATIFY_LOG_H_
 
-namespace statify {}  // namespace statify
+#include <stdarg.h>
+
+namespace statify {
+
+class Log {
+ public:
+  enum Level { ABORT = 0, ERROR = 1, WARN = 2, INFO = 3, DEBUG = 4 };
+
+  static void Write(int level, const char* fmt, ...);
+};
+
+}  // namespace statify
+
+#endif  // INCLUDE_STATIFY_LOG_H_

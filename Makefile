@@ -18,10 +18,10 @@
 # to switch between compilation modes.
 
 # A: Production use (full optimizations)
-#OPT ?= -O3 -DNDEBUG
+OPT ?= -O3 -DNDEBUG
 
 # B: Debug mode, with full line-level debugging symbols
-OPT ?= -g2
+#OPT ?= -g2
 
 # C: Profiling mode: optimizations, but w/debugging symbols
 #OPT ?= -O3 -g2 -DNDEBUG
@@ -40,13 +40,12 @@ include build_config.mk
 
 CXXFLAGS += -I. -I./include $(OPT) $(WARNINGFLAGS)
 
-STATIFY_OBJS = $(STATIFY_SOURCES:.cc=.o)
 STATIFYD_OBJS = $(STATIFYD_SOURCES:.cc=.o)
-LIBSTATIFY_OBJS = $(LIBSTATIFY_SOURCES:.cc=.o)
+STATIFY_OBJS = $(STATIFY_SOURCES:.cc=.o)
 TESTS = 
 
 # Targets
-all: statify statifyd libstatify.a
+all: libstatify.a statifyd
 
 .PHONY:
 check: $(TESTS)
@@ -54,24 +53,18 @@ check: $(TESTS)
 
 .PHONY:
 clean:
-	-rm -f */*.o build_config.mk *.a statify statifyd libstatify.a
+	-rm -f */*.o build_config.mk *.a statifyd
 
 .PHONY:
 count:
 	wc -l $(CPPLINT_SOURCES)
 
-# Statify client
-statify: $(STATIFY_OBJS) libstatify.a
-	$(CXX) $(CXXFLAGS) -o statify $(STATIFY_OBJS) $(LIBRARIES) libstatify.a
+libstatify.a: $(STATIFY_OBJS)
+	ar rcs libstatify.a $(STATIFY_OBJS)
 
 # Statify daemon
 statifyd: $(STATIFYD_OBJS) libstatify.a
 	$(CXX) $(CXXFLAGS) -o statifyd $(STATIFYD_OBJS) $(LIBRARIES) libstatify.a
-
-# Statify library
-libstatify.a: $(LIBSTATIFY_OBJS)
-	ar rcs libstatify.a $(LIBSTATIFY_OBJS)
-	ranlib libstatify.a
 
 # Lint check
 .PHONY:

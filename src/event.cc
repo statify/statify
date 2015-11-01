@@ -95,10 +95,13 @@ bool Event::EventToBuffer(const Event &event, Buffer *buffer) {
   data_type::const_iterator i = event.data_.begin();
   const data_type::const_iterator e = event.data_.end();
   for (; i != e; ++i) {
+    // Append key, including terminating NULL
     buffer->Append(i->first.c_str(), i->first.size() + 1);
+    // Append value, including terminating NULL
     buffer->Append(i->second.c_str(), i->second.size() + 1);
   }
 
+  // Append final terminating NULL to end sequence of values.
   buffer->AppendNull();
 
   return true;

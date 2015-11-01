@@ -14,6 +14,8 @@
 // contributors.
 
 #include "statify/utility.h"
+#include <byteswap.h>
+#include <endian.h>
 
 namespace statify {
 
@@ -24,6 +26,22 @@ size_t string_length_or_max(const char *str, size_t max) {
     }
   }
   return max;
+}
+
+int64_t htons64(int64_t host_int) {
+#ifdef LITTLE_ENDIAN
+  return bswap_64(host_int);
+#else
+  return host_int;
+#endif
+}
+
+int64_t ntohs64(int64_t net_int) {
+#ifdef LITTLE_ENDIAN
+  return bswap_64(net_int);
+#else
+  return net_int;
+#endif
 }
 
 }  // namespace statify

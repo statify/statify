@@ -16,6 +16,7 @@
 #ifndef INCLUDE_STATIFY_UTILITY_H_
 #define INCLUDE_STATIFY_UTILITY_H_
 
+#include <inttypes.h>
 #include <stdlib.h>
 
 namespace statify {
@@ -24,6 +25,12 @@ namespace statify {
 // the terminating NULL character, or return 'max', if the NULL terminator
 // is not encountered within 'max' characters.
 size_t string_length_or_max(const char *str, size_t max);
+
+// Convert a 64 bit integer in the host byte order to network byte order.
+int64_t htons64(int64_t host_int);
+
+// Convert a 64 bit integer in the network byte order to host byte order.
+int64_t ntohs64(int64_t net_int);
 
 }  // namespace statify
 

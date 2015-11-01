@@ -70,7 +70,9 @@ STATIFYD_SOURCES+='./src/statifyd.cc '
 STATIFY_SOURCES=""
 STATIFY_SOURCES+='./src/buffer.cc '
 STATIFY_SOURCES+='./src/event.cc '
+STATIFY_SOURCES+='./src/slice.cc '
 STATIFY_SOURCES+='./src/statify.cc '
+STATIFY_SOURCES+='./src/utility.cc '
 
 # Lint sources
 CPPLINT_SOURCES+='./src/*.cc '

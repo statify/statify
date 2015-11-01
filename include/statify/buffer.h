@@ -29,16 +29,19 @@ class Buffer {
   Buffer();
 
   // Construct from string.
-  explicit Buffer(const std::string& str);
+  explicit Buffer(const std::string &str);
+
+  // Construct empty, with specified size.
+  explicit Buffer(size_t size);
 
   // Construct from existing raw buffer.
-  Buffer(const char* data, size_t size);
+  Buffer(const char *data, size_t size);
 
   // Copy constructor.
-  Buffer(const Buffer& copy_from);
+  Buffer(const Buffer &copy_from);
 
   // Copy assignment.
-  Buffer& operator=(const Buffer& assign_from);
+  Buffer &operator=(const Buffer &assign_from);
 
   // Destructor.
   ~Buffer();
@@ -47,27 +50,30 @@ class Buffer {
   size_t Size() const;
 
   // Return pointer to raw data (const.)
-  const char* Data() const;
+  const char *Data() const;
 
   // Return pointer to raw data (non-const.)
-  char* Data();
+  char *Data();
 
   // Append data at the end of the buffer.
   // Returns reference to self so that calls may be chained.
-  Buffer& Append(const char* data, size_t size);
+  Buffer &Append(const char *data, size_t size);
+
+  // Append a single NULL character to the end of the buffer.
+  Buffer &AppendNull();
 
   // Canonical swap support
-  void swap(Buffer& other);
+  void swap(Buffer &other);
 
  private:
   std::vector<char> data_;
 };
 
 // Canonical swap support
-void swap(Buffer& lhs, Buffer& rhs);
+void swap(Buffer &lhs, Buffer &rhs);
 
 }  // namespace statify
 
-bool operator==(const statify::Buffer& lhs, const statify::Buffer& rhs);
+bool operator==(const statify::Buffer &lhs, const statify::Buffer &rhs);
 
 #endif  // INCLUDE_STATIFY_BUFFER_H_

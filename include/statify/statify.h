@@ -16,8 +16,6 @@
 #ifndef INCLUDE_STATIFY_STATIFY_H_
 #define INCLUDE_STATIFY_STATIFY_H_
 
-namespace statify {
-
-}  // namespace statify
+namespace statify {}  // namespace statify
 
 #endif  // INCLUDE_STATIFY_STATIFY_H_

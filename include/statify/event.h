@@ -13,6 +13,19 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include "statify/statify.h"
+#ifndef INCLUDE_STATIFY_EVENT_H_
+#define INCLUDE_STATIFY_EVENT_H_
 
-namespace statify {}  // namespace statify
+namespace statify {
+
+class Event {
+ public:
+  Event();
+  ~Event();
+
+ private:
+};
+
+}  // namespace statify
+
+#endif  // INCLUDE_STATIFY_EVENT_H_

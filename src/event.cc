@@ -13,6 +13,14 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include "statify/statify.h"
+#include "statify/event.h"
 
-namespace statify {}  // namespace statify
+namespace statify {
+
+Event::Event() {
+}
+
+Event::~Event() {
+}
+
+}  // namespace statify

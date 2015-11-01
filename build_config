@@ -52,6 +52,20 @@ fi
 # Add dependent libraries
 LIBRARIES="-lpthread -lrt -levent"
 
+# Detect libcurl in various locations, or abort if not found
+if [ -d "/usr/include/event2" ]; then
+  # Default location: no alternates
+  ALT_LIBEVENT_INCLUDE=""
+  ALT_LIBEVENT_LIBRARY=""
+elif [ -d "/home/$USER/usr/include/event2" ]
+then
+  ALT_LIBEVENT_INCLUDE="-I/home/$USER/usr/include"
+  ALT_LIBEVENT_LIBRARY="-L/home/$USER/usr/lib"
+else
+  echo "Error: libevent not found. Please install libevent on your system." >&2
+  exit 1
+fi
+
 # Check for curl library
 if [ -n "`which curl-config`" ]; then
   LIBRARIES="$LIBRARIES `curl-config --libs`"
@@ -79,6 +93,8 @@ CPPLINT_SOURCES+='./src/*.cc '
 CPPLINT_SOURCES+='./include/statify/*.h '
 
 # Emit variables
+echo "ALT_LIBEVENT_INCLUDE=$ALT_LIBEVENT_INCLUDE" >> $OUTPUT
+echo "ALT_LIBEVENT_LIBRARY=$ALT_LIBEVENT_LIBRARY" >> $OUTPUT
 echo "STATIFYD_SOURCES=$STATIFYD_SOURCES" >> $OUTPUT
 echo "STATIFY_SOURCES=$STATIFY_SOURCES" >> $OUTPUT
 echo "CPPLINT_SOURCES=$CPPLINT_SOURCES" >> $OUTPUT

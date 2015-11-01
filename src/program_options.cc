@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "statify/default_port_number.h"
 #include "statify/log.h"
 
 namespace {
@@ -38,9 +39,6 @@ static const int kDefaultBacklog = 10;
 
 // Maximum message size: 64kb
 static const int kDefaultMaxMessageSize = 65536;
-
-// Default port number to use when listening for new TCP connections.
-static const int kDefaultPortNumber = 9700;
 
 }  // namespace
 

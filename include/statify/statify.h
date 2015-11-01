@@ -51,7 +51,7 @@ class Statify {
   };
 
   // Create an instance of the Statify event logger.
-  Statify* Create(const Options* options = NULL);
+  static Statify* Create(const Options* options = NULL);
 
  private:
   Statify();

@@ -18,10 +18,10 @@
 # to switch between compilation modes.
 
 # A: Production use (full optimizations)
-OPT ?= -O3 -DNDEBUG
+#OPT ?= -O3 -DNDEBUG
 
 # B: Debug mode, with full line-level debugging symbols
-#OPT ?= -g2
+OPT ?= -g2
 
 # C: Profiling mode: optimizations, but w/debugging symbols
 #OPT ?= -O3 -g2 -DNDEBUG
@@ -40,12 +40,13 @@ include build_config.mk
 
 CXXFLAGS += -I. -I./include $(OPT) $(WARNINGFLAGS)
 
+DEMO_OBJS = $(DEMO_SOURCES:.cc=.o)
 STATIFYD_OBJS = $(STATIFYD_SOURCES:.cc=.o)
 STATIFY_OBJS = $(STATIFY_SOURCES:.cc=.o)
 TESTS = 
 
 # Targets
-all: libstatify.a statifyd
+all: demo libstatify.a statifyd
 
 .PHONY:
 check: $(TESTS)
@@ -58,6 +59,10 @@ clean:
 .PHONY:
 count:
 	wc -l $(CPPLINT_SOURCES)
+
+# Demo program. It only links to libstatify.a and pthreads
+demo: $(DEMO_OBJS) libstatify.a
+	$(CXX) $(CXXFLAGS) -o demo $(DEMO_OBJS) $(DEMO_LIBRARIES) libstatify.a
 
 libstatify.a: $(STATIFY_OBJS)
 	ar rcs libstatify.a $(STATIFY_OBJS)

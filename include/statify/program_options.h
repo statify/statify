@@ -29,10 +29,6 @@ class ProgramOptions {
   // Print command-line options.
   void DisplayHelp();
 
-  // Set/get the TCP port number to listen on for new connections.
-  void set_port(int port);
-  int port() const;
-
   // Set/get the listener backlog queue length.
   void set_backlog(int backlog);
   int backlog() const;
@@ -40,6 +36,10 @@ class ProgramOptions {
   // Set/get the help option.
   void set_help(bool help);
   bool help() const;
+
+  // Set/get the TCP port number to listen on for new connections.
+  void set_port(int port);
+  int port() const;
 
  private:
   int port_;

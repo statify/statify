@@ -85,20 +85,6 @@ void ProgramOptions::DisplayHelp() {
           kDefaultPortNumber, kDefaultBacklog);
 }
 
-void ProgramOptions::set_port(int port) {
-  assert(port >= 0);
-  assert(port <= 65535);
-  if ((port < 0) || (port > 65535)) {
-    Log::Write(Log::ABORT, "invalid port number specified: %d", port);
-    return;
-  }
-  port_ = port;
-}
-
-int ProgramOptions::port() const {
-  return port_;
-}
-
 void ProgramOptions::set_backlog(int backlog) {
   assert(backlog > 0);
   if (backlog < 1) {
@@ -117,6 +103,20 @@ void ProgramOptions::set_help(bool help) {
 
 bool ProgramOptions::help() const {
   return help_;
+}
+
+void ProgramOptions::set_port(int port) {
+  assert(port >= 0);
+  assert(port <= 65535);
+  if ((port < 0) || (port > 65535)) {
+    Log::Write(Log::ABORT, "invalid port number specified: %d", port);
+    return;
+  }
+  port_ = port;
+}
+
+int ProgramOptions::port() const {
+  return port_;
 }
 
 }  // namespace statify

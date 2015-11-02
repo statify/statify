@@ -81,6 +81,7 @@ DEMO_LIBRARIES='-lpthread '
 
 # Source files for the Statify daemon
 STATIFYD_SOURCES=""
+STATIFYD_SOURCES+='./src/event_decoder.cc '
 STATIFYD_SOURCES+='./src/log.cc '
 STATIFYD_SOURCES+='./src/program_options.cc '
 STATIFYD_SOURCES+='./src/statifyd.cc '

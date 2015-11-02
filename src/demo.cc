@@ -21,22 +21,23 @@ using statify::Event;
 using statify::Statify;
 
 int main(int argc, char* argv[]) {
-  // Create an event writer instance
-  // TODO(tdial): I like the name 'EventWriter' or 'EventLogger'; perhaps it
-  //              should be the name of the class instead of Statify.
-  Statify* event_writer = Statify::Create(NULL);
+  // Initialize Statify
+  int status = Statify::Initialize();
+  printf("Statify::Initialize() returned %d\n", status);
 
-  // Print the address of the event writer.
-  printf("event_writer = %p\n", event_writer);
-
+  // Prepare an event for logging
   Event event;
+  event.SetField("author", "dial");
   event.SetField("origin", "demo");
   event.SetField("useful", "true");
 
-  int status = event_writer->LogEvent(event);
+  // Log the event
+  status = Statify::LogEvent(event);
   printf("Statify::LogEvent() returned %d\n", status);
 
-  // Delete the event writer.
-  delete event_writer;
+  // Shutdown Statify
+  status = Statify::Shutdown();
+  printf("Statify::Shutdown() returned %d\n", status);
+
   return EXIT_SUCCESS;
 }

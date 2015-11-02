@@ -12,11 +12,11 @@ the initial version, including a simple logging backend as well as a
 backend that indexes directly into ElasticSearch.
 
 The Statify server is written in C++, and utilizes the libevent event-
-driven framework in order to efficiently handle potentiall thousands of
+driven framework in order to efficiently handle potentially thousands of
 inbound client connections. The Statify client library will expose C
 and C++ APIs in the initial version, with other languages to follow
 (Plans are to support Java, Go, and Python.) Those wishing to port the
-client library to other languages should contact the authors for
+client library to other languages should contact the author for
 assistance.
 
 ## Statify Events
@@ -32,7 +32,45 @@ blocking on synchronous network I/O. The client library will be highly
 portable, robust, and will support automatic reconnect on network
 failure, as well as being thread-safe and fork-safe.
 
+## A very simple example (C++)
+The following example demonstrates how easy it is to add Statify event
+logging to your application. You simply initialize the library once at
+startup time (this must be done before any messages will be sent to
+the daemon) create and log events, and shut down when done:
+
+    #include <stdlib.h>
+    #include "statify/statify.h"
+    
+    using statify::Statify;
+    using statify::Event;
+    
+    int main(int argc, char* argv[]) {
+      // Initialize the Statify library.
+      Statify::Initialize();
+
+      // Prepare an event for logging
+      Event event;
+      event.SetField("author", "tdial");
+      event.SetField("origin", "example");
+      event.SetField("useful", "hopefully");
+
+      // Log the event to the localhost daemon
+      Statify::LogEvent(event);
+
+      // Shutdown the Statify library.
+      Statify::Shutdown();
+
+      return EXIT_SUCCESS;
+    }
+
+The system will also support logging to hosts other than localhost, and
+will provide additional helper functions to make logging events even
+simpler for the programmer.
+
+Please note that due to the fact that Statify is currently in ALPHA,
+class names, function names, and described features are subject to change.
+
 ## Current Status
 
-Statify is currently in alpha.
+Statify is currently in ALPHA.
 

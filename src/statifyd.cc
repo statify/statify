@@ -41,11 +41,15 @@ namespace {
 class EventDecoder {
  public:
   EventDecoder() {
-    printf("EventDecoder()\n");
+    Log::Write(Log::DEBUG, "EventDecoder::EventDecoder()");
   }
 
   ~EventDecoder() {
-    printf("~EventDecoder()\n");
+    Log::Write(Log::DEBUG, "EventDecoder::~EventDecoder()");
+  }
+
+  void OnData(struct evbuffer* input, struct evbuffer* output) {
+    Log::Write(Log::DEBUG, "EventDecoder::OnData()");
   }
 
  private:
@@ -62,7 +66,6 @@ void buffer_read_callback(struct bufferevent* bev, void* ctx) {
 
   // TODO(tdial): Can bev be NULL?
   assert(bev != NULL);
-  // assert(ctx != NULL);
 
   // Access the input
   // TODO(tdial): Can this function return NULL?
@@ -73,6 +76,9 @@ void buffer_read_callback(struct bufferevent* bev, void* ctx) {
   // TODO(tdial): Can this function return NULL?
   struct evbuffer* out = bufferevent_get_output(bev);
   assert(out != NULL);
+
+  // Invoke method on EventDecoder for handling data.
+  decoder->OnData(in, out);
 
   // Write out whatever we read
   evbuffer_add_buffer(out, in);

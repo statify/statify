@@ -18,6 +18,7 @@
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 #include "statify/buffer.h"
+#include "statify/event.h"
 #include "statify/log.h"
 
 namespace statify {
@@ -39,6 +40,7 @@ void EventDecoder::OnData(evbuffer* input, evbuffer* output) {
     // How much data is consumable?
     const size_t consumable_data = evbuffer_get_length(input);
 
+    // TODO(tdial): Break out case statements into functions for clarity.
     switch (state_) {
       case STATE_WAITING_HEADER: {
         // To read the "header" we need at least the size of an uint32_t
@@ -92,6 +94,26 @@ void EventDecoder::OnData(evbuffer* input, evbuffer* output) {
 
 void EventDecoder::OnBuffer(const Buffer& buffer) {
   Log::Write(Log::DEBUG, "EventDecoder::OnBuffer()");
+
+  // Attempt deserializing an event from the buffer.
+  Event event;
+  const bool deserialized = Event::FromBuffer(buffer, &event);
+  if (!deserialized) {
+    Log::Write(Log::ERROR,
+               "EventDecoder::OnBuffer(): Event::FromBuffer() returned false");
+    return;
+  }
+
+  // We got an event: Log it
+  Log::Write(Log::DEBUG, "Event timestamp: %lu", event.timestamp());
+
+  // Iterate through the event's fields, and log them.
+  Event::Iterator i = event.begin();
+  Event::Iterator e = event.end();
+  for (; i != e; ++i) {
+    Log::Write(Log::DEBUG, "  Key: %s, Value: %s", i.Key().c_str(),
+               i.Value().c_str());
+  }
 }
 
 }  // namespace statify

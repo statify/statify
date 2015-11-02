@@ -28,7 +28,7 @@ EventDecoder::~EventDecoder() {
   Log::Write(Log::DEBUG, "EventDecoder::~EventDecoder()");
 }
 
-void EventDecoder::OnData(struct evbuffer* input, struct evbuffer* output) {
+void EventDecoder::OnData(evbuffer* input, evbuffer* output) {
   Log::Write(Log::DEBUG, "EventDecoder::OnData()");
 }
 

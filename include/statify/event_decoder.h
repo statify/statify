@@ -16,6 +16,9 @@
 #ifndef STATIFY_EVENT_DECODER_H_
 #define STATIFY_EVENT_DECODER_H_
 
+// Forward declaration for libevent type
+struct evbuffer;
+
 namespace statify {
 
 // The EventDecoder class is responsible for decoding Event objects from
@@ -29,7 +32,7 @@ class EventDecoder {
   ~EventDecoder();
 
   // Invoked when there is I/O to perform on the underlying socket.
-  void OnData(struct evbuffer* input, struct evbuffer* output);
+  void OnData(evbuffer* input, evbuffer* output);
 
  private:
   EventDecoder(const EventDecoder& no_copy);

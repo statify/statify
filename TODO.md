@@ -4,12 +4,15 @@ The bulleted items below are intended to be kept in priority order from
 greatest priority to least priority.
 
 * Pending
+  * Server should timeout on connections that hang for a long time
+    * This implies working reconnect logic for clients
   * Handle fork() in client library
   * Add C language interface
+  * Perhaps handlers should be loadable modules (shared libs)
   * Move non-public headers to source directory
   * Add an "install" target to Makefile
-  * Statify daemon should support logging levels
-  * Statify daemon should support writing logs into JSON for easy logstash integ.
+  * Server should support logging levels
+  * Server should support writing logs into JSON for easy logstash integration.
 
 * Completed
   * Implement basics of a client library

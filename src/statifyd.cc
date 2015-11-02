@@ -41,9 +41,9 @@ namespace {
 void buffer_read_callback(struct bufferevent* bev, void* ctx) {
   Log::Write(Log::INFO, "buffer_read_callback()");
 
-  // TODO(tdial): Can bev or ctx be NULL?
+  // TODO(tdial): Can bev be NULL?
   assert(bev != NULL);
-  assert(ctx != NULL);
+  // assert(ctx != NULL);
 
   // Access the input
   // TODO(tdial): Can this function return NULL?

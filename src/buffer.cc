@@ -77,6 +77,10 @@ Buffer &Buffer::AppendNull() {
   return Append(&kNull, 1);
 }
 
+void Buffer::Resize(size_t new_size) {
+  data_.resize(new_size);
+}
+
 void Buffer::swap(Buffer &other) {
   using std::swap;
   swap(this->data_, other.data_);

@@ -47,12 +47,17 @@ int Statify::Options::port() const {
   return port_;
 }
 
-Statify* Statify::Create(const Options* options) {
+int Statify::Initialize(const Options* options) {
   // TODO(tdial): Implement
-  return new Statify();
+  return 0;
 }
 
 int Statify::LogEvent(const Event& event) {
+  // TODO(tdial): Implement
+  return 0;
+}
+
+int Statify::Shutdown() {
   // TODO(tdial): Implement
   return 0;
 }

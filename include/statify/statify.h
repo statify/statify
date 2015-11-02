@@ -28,7 +28,6 @@ class Statify {
   ~Statify();
 
   // Options structure used to specify alternate host and port.
-  // If NULL is passed to Statify::Create(), localhost and port 9700 are used.
   class Options {
    public:
     Options();
@@ -50,11 +49,14 @@ class Statify {
     int port_;
   };
 
-  // Create an instance of the Statify event logger.
-  static Statify* Create(const Options* options = NULL);
+  // Initialize the Statify library.
+  static int Initialize(const Options* options = NULL);
 
   // Log an event
-  int LogEvent(const Event& event);
+  static int LogEvent(const Event& event);
+
+  // Shut town the Statify library.
+  static int Shutdown();
 
  private:
   Statify();

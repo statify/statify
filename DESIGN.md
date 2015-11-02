@@ -24,11 +24,11 @@ An Event is simply a time-stamped dictionary of arbitrary name/value
 pairs, with the restriction that names that begin with leading underscores
 are reserved for use by the statify protocol.
 
-The client library provides easy-to-use APIs for constructing events and
-dispatching them to a Statify server, while avoiding blocking on 
-synchronous network I/O. The client library is highly robust, supporting
-automatic reconnect on network failure, as well as being thread-safe and
-fork-safe.
+The client library will provide easy-to-use APIs for constructing events
+and dispatching them to a Statify server, while avoiding blocking on 
+synchronous network I/O. The client library will be highly portable,
+robust, and will support automatic reconnect on network failure, as well
+as being thread-safe and fork-safe.
 
 Deployment and Scaling
 

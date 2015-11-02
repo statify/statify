@@ -6,6 +6,8 @@ greatest priority to least priority.
 * Pending
   * Handle fork() in client library
   * Add C language interface
+  * Move non-public headers to source directory
+  * Add an "install" target to Makefile
   * Statify daemon should support logging levels
   * Statify daemon should support writing logs into JSON for easy logstash integ.
 

@@ -26,42 +26,25 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <statify/buffer.h>
-#include <statify/event.h>
+#include "statify/buffer.h"
+#include "statify/event.h"
+#include "statify/event_decoder.h"
 #include "statify/log.h"
 #include "statify/program_options.h"
 
 using statify::Buffer;
 using statify::Event;
+using statify::EventDecoder;
 using statify::Log;
 using statify::ProgramOptions;
 
 namespace {
 
-class EventDecoder {
- public:
-  EventDecoder() {
-    Log::Write(Log::DEBUG, "EventDecoder::EventDecoder()");
-  }
-
-  ~EventDecoder() {
-    Log::Write(Log::DEBUG, "EventDecoder::~EventDecoder()");
-  }
-
-  void OnData(struct evbuffer* input, struct evbuffer* output) {
-    Log::Write(Log::DEBUG, "EventDecoder::OnData()");
-  }
-
- private:
-  EventDecoder(const EventDecoder& no_copy);
-  EventDecoder& operator=(const EventDecoder& no_assign);
-};
-
 void buffer_read_callback(struct bufferevent* bev, void* ctx) {
   Log::Write(Log::INFO, "buffer_read_callback()");
 
   // Access the "context," which is an EventDecoder.
-  EventDecoder* decoder = reinterpret_cast<EventDecoder*>(ctx);
+  statify::EventDecoder* decoder = reinterpret_cast<EventDecoder*>(ctx);
   assert(decoder != NULL);
 
   // TODO(tdial): Can bev be NULL?
@@ -81,6 +64,7 @@ void buffer_read_callback(struct bufferevent* bev, void* ctx) {
   decoder->OnData(in, out);
 
   // Write out whatever we read
+  // TODO(tdial): Remove this when done implementing.
   evbuffer_add_buffer(out, in);
 }
 

@@ -54,7 +54,7 @@ check: $(TESTS)
 
 .PHONY:
 clean:
-	-rm -f */*.o build_config.mk *.a statifyd
+	-rm -f */*.o build_config.mk *.a demo libstatify.a statifyd
 
 .PHONY:
 count:

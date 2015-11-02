@@ -4,6 +4,7 @@ The bulleted items below are intended to be kept in priority order from
 greatest priority to least priority.
 
 * Pending
+  * Handle EINTR in Statify::LogEvent()
   * Server should timeout on connections that hang for a long time
     * This implies working reconnect logic for clients
   * Handle fork() in client library

@@ -38,8 +38,27 @@ using statify::ProgramOptions;
 
 namespace {
 
+class EventDecoder {
+ public:
+  EventDecoder() {
+    printf("EventDecoder()\n");
+  }
+
+  ~EventDecoder() {
+    printf("~EventDecoder()\n");
+  }
+
+ private:
+  EventDecoder(const EventDecoder& no_copy);
+  EventDecoder& operator=(const EventDecoder& no_assign);
+};
+
 void buffer_read_callback(struct bufferevent* bev, void* ctx) {
   Log::Write(Log::INFO, "buffer_read_callback()");
+
+  // Access the "context," which is an EventDecoder.
+  EventDecoder* decoder = reinterpret_cast<EventDecoder*>(ctx);
+  assert(decoder != NULL);
 
   // TODO(tdial): Can bev be NULL?
   assert(bev != NULL);
@@ -67,6 +86,10 @@ void buffer_write_callback(struct bufferevent* bev, void* ctx) {
 void buffer_event_callback(struct bufferevent* bev, int16_t events, void* ctx) {
   Log::Write(Log::INFO, "buffer_event_callback()");
 
+  // Access the "context," which is an EventDecoder.
+  EventDecoder* decoder = reinterpret_cast<EventDecoder*>(ctx);
+  assert(decoder != NULL);
+
   if (events & BEV_EVENT_ERROR) {
     Log::Write(Log::ERROR, "buffer_event_callback(): BEV_EVENT_ERROR");
   }
@@ -74,6 +97,7 @@ void buffer_event_callback(struct bufferevent* bev, int16_t events, void* ctx) {
   if (events & BEV_EVENT_EOF) {
     Log::Write(Log::INFO, "buffer_event_callback(): BEV_EVENT_EOF");
     bufferevent_free(bev);
+    delete decoder;
   }
 }
 
@@ -97,9 +121,12 @@ void accept_callback(struct evconnlistener* listener, evutil_socket_t sock,
   // TODO(tdial): In what circumstances may bufferevent_socket_new() fail?
   assert(bev != NULL);
 
+  // Create a decoder for parsing events off the "wire."
+  EventDecoder* decoder = new EventDecoder();
+
   // Configure event callbacks
   bufferevent_setcb(bev, buffer_read_callback, buffer_write_callback,
-                    buffer_event_callback, NULL);
+                    buffer_event_callback, decoder);
 
   bufferevent_enable(bev, EV_READ | EV_WRITE);
 }

@@ -68,7 +68,8 @@ size_t AppendEventToBuffer(const statify::Event& event, statify::Buffer* buf) {
   }
 
   // Calculate payload size, and prepare for poking back into the buffer.
-  uint32_t actual_payload_size = htonl((uint32_t)bytes_added);
+  uint32_t actual_payload_size =
+      htonl((uint32_t)bytes_added - sizeof(uint32_t));
 
   // Poke the actual payload size back into the buffer.
   char* data = buf->Data();

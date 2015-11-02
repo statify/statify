@@ -13,13 +13,17 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#ifndef STATIFY_EVENT_DECODER_H_
-#define STATIFY_EVENT_DECODER_H_
+#ifndef INCLUDE_STATIFY_EVENT_DECODER_H_
+#define INCLUDE_STATIFY_EVENT_DECODER_H_
+
+#include <stdlib.h>
 
 // Forward declaration for libevent type
 struct evbuffer;
 
 namespace statify {
+
+class Buffer;
 
 // The EventDecoder class is responsible for decoding Event objects from
 // the "wire." The event framework instanstiates an EventDecoder when a
@@ -34,11 +38,26 @@ class EventDecoder {
   // Invoked when there is I/O to perform on the underlying socket.
   void OnData(evbuffer* input, evbuffer* output);
 
+  // Return diagnostic count of events received.
+  size_t events_received() const;
+
  private:
   EventDecoder(const EventDecoder& no_copy);
   EventDecoder& operator=(const EventDecoder& no_assign);
+
+  // Invoked when a complete event buffer is deserialized.
+  void OnBuffer(const Buffer& buffer);
+
+  enum {
+    STATE_WAITING_HEADER = 0,  // Waiting for the length header
+    STATE_WAITING_BODY = 1     // Waiting for body data
+  };
+
+  int state_;
+  size_t payload_size_;
+  size_t events_received_;
 };
 
 }  // namespace statify
 
-#endif  // STATIFY_EVENT_DECODER_H_
+#endif  // INCLUDE_STATIFY_EVENT_DECODER_H_

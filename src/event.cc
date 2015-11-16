@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <string.h>
+#include <sys/time.h>
 #include "statify/buffer.h"
 #include "statify/slice.h"
 #include "statify/utility.h"
@@ -66,10 +67,18 @@ const std::string &Event::GetField(const std::string &field_name) const {
 }
 
 int64_t Event::Now() {
-  const size_t kBillion = 1000000000;
+  const size_t BILLION = 1000000000;
+#ifdef __APPLE__
+  // Apple Mac OSX Does not have clock_gettime; just use gettimeofday
+  const size_t THOUSAND = 1000;
+  struct timeval tv = {0};
+  gettimeofday(&tv, NULL);
+  return (tv.tv_sec * BILLION) + (tv.tv_usec * THOUSAND);
+#else
   struct timespec ts = {0};
   clock_gettime(CLOCK_REALTIME, &ts);
-  return (ts.tv_sec * kBillion) + ts.tv_nsec;
+  return (ts.tv_sec * BILLION) + ts.tv_nsec;
+#endif
 }
 
 bool Event::ToBuffer(const Event &event, Buffer *buffer) {

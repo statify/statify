@@ -36,6 +36,9 @@ if test -z "$CXX"; then
   CXX=g++
 fi
 
+# Define PLATFORM to indicate the build OS
+PLATFORM=`uname -s`
+
 # Test to see if the caller specified a lint tool; if not, we'll 
 # attempt to default to cpplint.py, but if that isn't present on
 # the system, we'll use 'fakelint', a do-nothing stub that lives
@@ -49,8 +52,14 @@ if test -z "$LINT_TOOL"; then
   fi
 fi
 
+
 # Add dependent libraries
-LIBRARIES="-lpthread -lrt -levent"
+LIBRARIES="-lpthread -levent "
+
+# Add platform-specific libraries
+if [ "$PLATFORM" = "Linux" ]; then
+  LIBRARIES+="-lrt"
+fi
 
 # Detect libcurl in various locations, or abort if not found
 if [ -d "/usr/include/event2" ]; then
@@ -94,6 +103,7 @@ STATIFYD_SOURCES+='./src/statifyd.cc '
 STATIFY_SOURCES=""
 STATIFY_SOURCES+='./src/buffer.cc '
 STATIFY_SOURCES+='./src/event.cc '
+STATIFY_SOURCES+='./src/portable.cc '
 STATIFY_SOURCES+='./src/slice.cc '
 STATIFY_SOURCES+='./src/statify.cc '
 STATIFY_SOURCES+='./src/utility.cc '

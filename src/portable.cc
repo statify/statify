@@ -13,33 +13,27 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include "statify/utility.h"
 #include "statify/portable.h"
+#ifdef __linux__
+  #include <byteswap.h>
+  #include <endian.h>
+#else
+#endif
+
+#define XOR_BYTE_SWAP(a, b) ((a)^=(b),(b)^=(a),(a)^=(b))
 
 namespace statify {
 
-size_t string_length_or_max(const char *str, size_t max) {
-  for (size_t i = 0; i < max; ++i) {
-    if (str[i] == '\0') {
-      return i;
-    }
-  }
-  return max;
-}
-
-int64_t htons64(int64_t host_int) {
-#ifdef LITTLE_ENDIAN
-  return ByteSwapInt64(host_int);
+int64_t ByteSwapInt64(int64_t value) {
+#ifdef __linux__
+  return bswap64(value);
 #else
-  return host_int;
-#endif
-}
-
-int64_t ntohs64(int64_t net_int) {
-#ifdef LITTLE_ENDIAN
-  return ByteSwapInt64(net_int);
-#else
-  return net_int;
+  unsigned char* buf = reinterpret_cast<unsigned char*>(&value);
+  XOR_BYTE_SWAP(buf[0], buf[7]);
+  XOR_BYTE_SWAP(buf[1], buf[6]);
+  XOR_BYTE_SWAP(buf[2], buf[5]);
+  XOR_BYTE_SWAP(buf[3], buf[4]);
+  return value;
 #endif
 }
 

@@ -13,34 +13,15 @@
 // limitations under the License. See the AUTHORS file for names of
 // contributors.
 
-#include "statify/utility.h"
-#include "statify/portable.h"
+#ifndef INCLUDE_STATIFY_PORTABLE_H_
+#define INCLUDE_STATIFY_PORTABLE_H_
+
+#include <inttypes.h>
 
 namespace statify {
 
-size_t string_length_or_max(const char *str, size_t max) {
-  for (size_t i = 0; i < max; ++i) {
-    if (str[i] == '\0') {
-      return i;
-    }
-  }
-  return max;
-}
-
-int64_t htons64(int64_t host_int) {
-#ifdef LITTLE_ENDIAN
-  return ByteSwapInt64(host_int);
-#else
-  return host_int;
-#endif
-}
-
-int64_t ntohs64(int64_t net_int) {
-#ifdef LITTLE_ENDIAN
-  return ByteSwapInt64(net_int);
-#else
-  return net_int;
-#endif
-}
+int64_t ByteSwapInt64(int64_t value);
 
 }  // namespace statify
+
+#endif  // INCLUDE_STATIFY_PORTABLE_H_

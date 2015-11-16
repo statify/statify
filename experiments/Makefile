@@ -8,4 +8,4 @@ main.o: main.cc
 	$(CC) $(CFLAGS) -c main.cc
 .PHONY:
 clean:
-	-rm -f experiment *.o *~
+	-rm -f experiment *.o *~ .*~

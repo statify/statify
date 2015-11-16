@@ -15,26 +15,26 @@
 
 #include "statify/portable.h"
 #ifdef __linux__
-  #include <byteswap.h>
-  #include <endian.h>
+#include <byteswap.h>
+#include <endian.h>
 #else
 #endif
 
-#define XOR_BYTE_SWAP(a, b) ((a)^=(b),(b)^=(a),(a)^=(b))
+#define XOR_BYTE_SWAP(a, b) ((a) ^= (b), (b) ^= (a), (a) ^= (b))
 
 namespace statify {
 
 int64_t ByteSwapInt64(int64_t value) {
 #ifdef __linux__
-  return bswap64(value);
+  value = bswap_64(value);
 #else
   unsigned char* buf = reinterpret_cast<unsigned char*>(&value);
   XOR_BYTE_SWAP(buf[0], buf[7]);
   XOR_BYTE_SWAP(buf[1], buf[6]);
   XOR_BYTE_SWAP(buf[2], buf[5]);
   XOR_BYTE_SWAP(buf[3], buf[4]);
-  return value;
 #endif
+  return value;
 }
 
 }  // namespace statify

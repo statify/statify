@@ -157,12 +157,12 @@ int Statify::LogEvent(const Event& event) {
     return errno;
   }
 
-  // On Linux, we can specify that we don't want failed writes to cause a
-  // SIGPIPE by passing the MSG_NOSIGNAL flag. This is not available on 
-  // all platforms, including Mac OSX. We'll address this in the future
-  // by making the thread that handles the send block the signal. Also,
-  // we should allow certain errors (EAGAIN)
-  // TODO(tdial): blocks signals and handle allowable errors.
+// On Linux, we can specify that we don't want failed writes to cause a
+// SIGPIPE by passing the MSG_NOSIGNAL flag. This is not available on
+// all platforms, including Mac OSX. We'll address this in the future
+// by making the thread that handles the send block the signal. Also,
+// we should allow certain errors (EAGAIN)
+// TODO(tdial): blocks signals and handle allowable errors.
 #ifdef __linux__
   const int kSendFlags = MSG_NOSIGNAL;
 #else

@@ -57,6 +57,10 @@ if [ -d "/usr/include/event2" ]; then
   # Default location: no alternates
   ALT_LIBEVENT_INCLUDE=""
   ALT_LIBEVENT_LIBRARY=""
+elif [ -d "/usr/local/include/event2" ]
+then
+  ALT_LIBEVENT_INCLUDE="-I/usr/local/include"
+  ALT_LIBEVENT_LIBRARY="-L/usr/local/lib"
 elif [ -d "/home/$USER/usr/include/event2" ]
 then
   ALT_LIBEVENT_INCLUDE="-I/home/$USER/usr/include"

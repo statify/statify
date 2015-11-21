@@ -1,4 +1,5 @@
-# Statify
+#Statify
+########
 
 Statify is a statistics gathering system consisting of a client library
 and server that enables programs to reliably log events for collection
@@ -34,31 +35,33 @@ failure, as well as being thread-safe and fork-safe.
 
 ## A very simple example (C++)
 The following example demonstrates how easy it is to add Statify event
-logging to your application. You simply initialize the library once at
-startup time (this must be done before any messages will be sent to
-the daemon) create and log events, and shut down when done:
+logging to your application. You simply create a client, construct
+events, and send them!
 
     #include <stdlib.h>
-    #include "statify/statify.h"
+    #include "statify/client.h"
     
-    using statify::Statify;
+    using statify::Client;
     using statify::Event;
     
     int main(int argc, char* argv[]) {
-      // Initialize the Statify library.
-      Statify::Initialize();
-
-      // Prepare an event for logging
+      // Create a client, using default options.
+      Client* client = Client::Create(NULL, NULL);
+      if (!client) {
+        return EXIT_FAILURE;
+      }
+      
+      // Prepare an event for sending.
       Event event;
       event.SetField("author", "tdial");
       event.SetField("origin", "example");
       event.SetField("useful", "hopefully");
 
-      // Log the event to the localhost daemon
-      Statify::LogEvent(event);
+      // Send the event to collector daemon.
+      client->SendEvent(event);
 
-      // Shutdown the Statify library.
-      Statify::Shutdown();
+      // Delete the client
+      delete client;
 
       return EXIT_SUCCESS;
     }

@@ -62,7 +62,7 @@ count:
 
 # Demo program. It only links to libstatify.a and pthreads
 demo: $(DEMO_OBJS) libstatify.a
-	$(CXX) $(CXXFLAGS) -o demo $(DEMO_OBJS) $(DEMO_LIBRARIES) libstatify.a
+	$(CXX) $(CXXFLAGS) -o demo $(DEMO_OBJS) libstatify.a $(DEMO_LIBRARIES)
 
 libstatify.a: $(STATIFY_OBJS)
 	ar rcs libstatify.a $(STATIFY_OBJS)

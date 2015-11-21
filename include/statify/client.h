@@ -60,9 +60,15 @@ class Client {
   int SendEvent(const Event& event);
 
  private:
+  // Default constructor.
+  Client();
+
   // Copy and assignment are explicitly disallowed.
   Client(const Client& no_copy);
   Client& operator=(const Client& no_assign);
+
+  // Perform post-constructor initialization.
+  int Initialize(const Options* options);
 
   // Private thread procedure; turns around an invokes the member, below.
   static void* ThreadProcedure(void* arg);
@@ -73,6 +79,28 @@ class Client {
   // Synchronization primitives used to manage event queue.
   pthread_mutex_t mutex_;
   pthread_cond_t cond_;
+
+  // Thread handle for the worker thread owned by the client.
+  pthread_t thread_;
+
+  // During initialization, we create the worker thread. We then wait until
+  // We can confirm that the thread has been created successfully. If not,
+  // we perform teardown. The variable thread_run_state_ is protected by
+  // the mutex/condition pair above.
+  enum {
+    kThreadRunStateNotStarted = 0,
+    kThreadRunStateStarted = 1,
+    kThreadRunStateFailedToStart = 2
+  };
+  int thread_run_state_;
+
+  // If the thread fails to initialize, it will set this variable to
+  // a status code under protection of mutex_. This, in turn, is
+  // accessed in Create() in the event of an error in order to
+  int thread_initialization_error_;
+
+  // Set to 'true' if the object was initialized. Used in cleanup.
+  bool initialized_;
 };
 
 }  // namespace statify

@@ -15,6 +15,40 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "statify/client.h"
+
+using statify::Client;
+using statify::Event;
+
+int main(int argc, char* argv[]) {
+  int status = 0;
+
+  // Create a client
+  Client* client = Client::Create(NULL, &status);
+  if (!client) {
+    fprintf(stderr, "error %d creating Client\n", status);
+    return EXIT_FAILURE;
+  }
+
+  // Prepare an event for sending
+  Event event;
+  event.SetField("author", "dial");
+  event.SetField("origin", "demo");
+  event.SetField("useful", "true");
+
+  // Send the event to the collector
+  status = client->SendEvent(event);
+  if (status != 0) {
+    fprintf(stderr, "error %d sending Event\n", status);
+  }
+
+  // Delete the client
+  delete client;
+
+  return EXIT_SUCCESS;
+}
+
+/*
 #include "statify/statify.h"
 
 using statify::Event;
@@ -41,3 +75,4 @@ int main(int argc, char* argv[]) {
 
   return EXIT_SUCCESS;
 }
+*/

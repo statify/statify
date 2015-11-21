@@ -62,6 +62,9 @@ class Buffer {
   // Append a single NULL character to the end of the buffer.
   Buffer &AppendNull();
 
+  // Clear the buffer
+  void Clear();
+
   // Resize the buffer. If growing, the new area is zero initialized.
   void Resize(size_t new_size);
 

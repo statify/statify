@@ -31,6 +31,8 @@ namespace {
 // This must always be a number that can be represented by uint32_t
 const size_t kMaxEventPayloadSize = 16777216;  // 16MB
 
+const char* const kDefaultHost = "127.0.0.1";
+
 // Append an event to the buffer.
 // Returns number of bytes added, or zero if the event could not be serialized
 // to the buffer. The only reason for failure would be that the event, once
@@ -80,7 +82,7 @@ size_t AppendEventToBuffer(const statify::Event& event, statify::Buffer* buf) {
   return bytes_added;
 }
 
-// Return 'true' if we may retry a write
+// Return 'true' if the specified errno would allow for a retry.
 inline bool RetryableSocketError(int error) {
   return ((error == EINTR) || (error == EAGAIN));
 }
@@ -92,7 +94,7 @@ namespace statify {
 Statify::~Statify() {
 }
 
-Statify::Options::Options() : host_("127.0.0.1"), port_(kDefaultPortNumber) {
+Statify::Options::Options() : host_(kDefaultHost), port_(kDefaultPortNumber) {
 }
 
 Statify::Options& Statify::Options::set_host(const std::string& host_or_ip) {

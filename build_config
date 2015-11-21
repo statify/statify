@@ -102,6 +102,7 @@ STATIFYD_SOURCES+='./src/statifyd.cc '
 # Source files for the Statify library
 STATIFY_SOURCES=""
 STATIFY_SOURCES+='./src/buffer.cc '
+STATIFY_SOURCES+='./src/client.cc '
 STATIFY_SOURCES+='./src/event.cc '
 STATIFY_SOURCES+='./src/portable.cc '
 STATIFY_SOURCES+='./src/slice.cc '

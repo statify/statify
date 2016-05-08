@@ -17,4 +17,5 @@ statifyd
 # Don't ignore the files in the subdirectory of include/statify
 !statify/
 
-
+# Apple stuff
+.DS_Store
